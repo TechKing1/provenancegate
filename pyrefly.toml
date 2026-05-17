@@ -1,0 +1,4 @@
+# pyrefly.toml — Linter configuration for ProvenanceGate
+# Points Pyrefly at the Python 3.13 interpreter where packages are installed.
+
+python_interpreter = "C:/Python313/python.exe"
