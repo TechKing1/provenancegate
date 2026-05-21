@@ -22,10 +22,11 @@ class Trust(IntEnum):
     Lower numeric value == higher trust. The assembler sorts by this value so
     system prompts are presented first in the assembled message.
     """
-    SYSTEM = 0      # highest trust
+
+    SYSTEM = 0  # highest trust
     USER = 1
     RETRIEVED = 2
-    TOOL = 3        # lowest trust
+    TOOL = 3  # lowest trust
 
 
 class Chunk:
@@ -35,6 +36,7 @@ class Chunk:
         content: The raw text of the chunk.
         trust: A `Trust` enum indicating provenance/authority.
     """
+
     def __init__(self, content: str, trust: Trust):
         self.content = content
         self.trust = trust
@@ -53,6 +55,7 @@ class ContextAssembler:
     - Non-system chunks are labeled in the assembled system message so the
       LLM receives explicit provenance markers (e.g., `[RETRIEVED INPUT]`).
     """
+
     def __init__(self):
         self.chunks: list[Chunk] = []
 
@@ -87,9 +90,6 @@ class ContextAssembler:
                 label = f"[{chunk.trust.name} INPUT — trust level {chunk.trust.value}]"
                 system_parts.append(f"{label}\n{chunk.content}")
 
-        messages.append({
-            "role": "system",
-            "content": "\n\n".join(system_parts)
-        })
+        messages.append({"role": "system", "content": "\n\n".join(system_parts)})
 
         return messages

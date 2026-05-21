@@ -15,6 +15,7 @@ from assembler import Chunk, Trust
 
 class PolicyViolation(Exception):
     """Raised when a policy rule is violated and strict mode is enabled."""
+
     pass
 
 
@@ -43,14 +44,17 @@ class PolicyEngine:
             detected match (blocking mode). If False, violations are recorded
             but execution continues (audit mode).
     """
+
     def __init__(self, strict: bool = True):
         self.strict = strict
         self.violations: list[str] = []
-        
+
         # Pre-compile the regex pattern for O(N) evaluation. We escape each
         # pattern to avoid accidental regex metacharacter interpretation, and
         # then join with alternation for a single scan over the text.
-        escaped_patterns = [re.escape(p) for p in RULES["instruction_override_patterns"]]
+        escaped_patterns = [
+            re.escape(p) for p in RULES["instruction_override_patterns"]
+        ]
         combined_pattern = "|".join(escaped_patterns)
         self._compiled_rule = re.compile(f"({combined_pattern})", re.IGNORECASE)
 
@@ -75,8 +79,11 @@ class PolicyEngine:
             # instruction-override rules; some deployments may change this.
             if chunk.trust in (Trust.RETRIEVED, Trust.TOOL, Trust.USER):
                 # Find all unique matches in the chunk content
-                matches = set(m.group(1).lower() for m in self._compiled_rule.finditer(chunk.content))
-                
+                matches = set(
+                    m.group(1).lower()
+                    for m in self._compiled_rule.finditer(chunk.content)
+                )
+
                 for match in matches:
                     violation = (
                         f"Policy violation in [{chunk.trust.name}] chunk: "

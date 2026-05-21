@@ -132,3 +132,40 @@ If you want, I can also:
 - Add `fpdf` to `requirements.txt` so `generate_submission.py` works out of
 	the box.
 - Run the demos and capture short logs in `logs/` for you.
+
+## Development & Testing
+
+Use the included `requirements-dev.txt` to install developer tools for
+testing and linting.
+
+Windows (PowerShell):
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+```
+
+Windows (CMD):
+```cmd
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements-dev.txt
+```
+
+Run tests with `pytest`:
+```powershell
+python -m pytest -q
+```
+
+Run linting with `ruff`:
+```powershell
+ruff check .
+```
+
+Quick combined check:
+```powershell
+python -m pytest -q && ruff .
+```
+
+The `requirements-dev.txt` includes `pytest` and `ruff` for lightweight
+developer workflows.
